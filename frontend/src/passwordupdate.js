@@ -17,11 +17,17 @@ function Passwordupdate(){
     newPassword:'',
     confirmPassword: '',
   })
+  const [ismatch,setismatch]=useState(true);
+  const [isformatvalid,setisformatinvalid]=useState(true);
+  const [isoldpasswordvalid,setisoldpasswordvalid]=useState(true);
+
+
 
   const handlePasswordUpdate = async () => {
     // Check if newPassword and confirmPassword match
     if (passwords.newPassword !== passwords.confirmPassword) {
       alert("New password and confirmation password don't match");
+      setismatch(false)
       return;
     }
     function validatePassword(newPassword) {
@@ -31,6 +37,7 @@ function Passwordupdate(){
     }
     if (!validatePassword(passwords.newPassword)) {
          alert("Invalid password format:\n password must contain\n 8 characters\n at least one uppercase letter\n at least one special character\n one digit");
+         setisformatinvalid(false);
          return;
     }
 
@@ -49,6 +56,7 @@ function Passwordupdate(){
     } catch (error) {
       console.error('Error updating password:', error);
       alert('Invalid old password');
+      setisoldpasswordvalid(false);
     }
   };
 
@@ -143,15 +151,18 @@ setischanged(!ischanged);
         <div className='both'>   
 
         <div className='form-row'>        
-        <label htmlfor="oldpassword">Old Password </label>
+        <label htmlFor="oldpassword">Old Password </label>
         <input  type="text" name="oldpassword" id="oldpassword" value={passwords.oldPassword}
-                onChange={(e) =>setPasswords({ ...passwords, oldPassword: e.target.value }) }/><br />
+                onChange={(e) =>{setPasswords({ ...passwords, oldPassword: e.target.value })
+                                 setisoldpasswordvalid(true)} }/><br />
         </div>
 
         <div className='form-row'> 
-        <label htmlfor="newpassword">New Password</label>
+        <label htmlFor="newpassword">New Password</label>
         <input  type="password" name="newpassword" id="newpassword"  value={passwords.newPassword}
-                onChange={(e) =>setPasswords({ ...passwords, newPassword: e.target.value })} /><br />
+                onChange={(e) =>{setPasswords({ ...passwords, newPassword: e.target.value })
+                                  setismatch(true)
+                                  setisformatinvalid(true)}} /><br />
         </div>
 
         </div>
@@ -159,14 +170,28 @@ setischanged(!ischanged);
         <div className='both'>
         <div className='margin'>
         <div className='form-row'> 
-        <label htmlfor="confirmpassword">Confirm Password </label>
+        <label htmlFor="confirmpassword">Confirm Password </label>
         <input  type="password" name='confirmpassword' id='confirmpassword' value={passwords.confirmPassword}
-                  onChange={(e) => setPasswords({...passwords,confirmPassword: e.target.value,})}/><br></br>
+                  onChange={(e) => {setPasswords({...passwords,confirmPassword: e.target.value,})
+                                    setismatch(true)
+                                    setisformatinvalid(true)}}/><br></br>
         </div>
         </div>
        </div>
       </div>
+
       <div className='fullbutton'>
+      {!isformatvalid && (
+        <div className="error-message">Invalid password format</div>
+        )} 
+      {!ismatch && (
+        <div className="error-message">New password and confirmation password don't match</div>
+         )}
+      {!isoldpasswordvalid && (
+        <div className="error-message">invalid old password</div>
+         )}
+
+
       <button type="button" className="button" onClick={handlePasswordUpdate} >Update</button>
       <button type="button" className="button1" onClick={handlecancel} >Cancel</button>
     </div>

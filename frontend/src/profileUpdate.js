@@ -14,6 +14,9 @@ AWS.config.update({
 function ProfileUpdate() {
   const navigate = useNavigate();
   const [ischanged, setischanged] = useState(false);
+  const[isphonevalid, setisphonevalid]=useState(true);
+  const[isemailvalid, setisemailvalid]=useState(true)
+
   const [changedData, setChangedData] = useState({
     id: '',
     firstname:"",
@@ -48,6 +51,9 @@ function ProfileUpdate() {
   }, [ischanged]);
 
   const handleChanges = (e) => {
+    setisemailvalid(true);
+    setisphonevalid(true);
+
     const { name, value } = e.target;
     setChangedData((prevData) => ({
       ...prevData,
@@ -72,11 +78,13 @@ function ProfileUpdate() {
 
 //validate phone number
       if (!validatePhone(changedData.phone)) {
-        alert("invalid Phone number");
+       // alert("invalid Phone number");
+        setisphonevalid(false);
        }
 //validate email
       if (!validateEmail(changedData.email)) {
-        alert("invalid email");
+        //alert("invalid email");
+        setisemailvalid(false);
       }
       if(validatePhone(changedData.phone)&&validateEmail(changedData.email)){
         update();
@@ -177,22 +185,29 @@ alert("Image uploaded successfully");
         <div className='both'>
         
         <div className='form-row'>  
-        <label>Last Name </label>
+        <label htmlFor="secondname">Last Name </label>
         <input type="text" name="secondname" id="secondname" value={changedData.secondname} onChange={handleChanges} required/><br />
         </div>
 
         <div className='form-row'> 
-        <label className=''>Phone</label>
+        <label htmlFor="phone">Phone</label>
         <input  type="text" name="phone" id="phone" value={changedData.phone} onChange={handleChanges} required/><br />
         </div>
+        
 
         <div className='form-row'> 
-        <label>Language  </label>
+        <label htmlFor="language">Language  </label>
         <input  type="text"  className='pointerevent' name='language' id='language' value={changedData.language} readOnly/><br></br>
 
         </div></div>
         </div>
       <div className='fullbutton'>
+      {!isphonevalid && (
+        <div className="error-message">invalid Phone number</div>
+         )}
+        {!isemailvalid && (
+        <div className="error-message">invalid Email</div>
+      )} 
       <button type="button" className="button" onClick={handleSubmit}>Update</button>
       <button type="button" className="button1" onClick={handleCancel}>Cancel</button>
     </div>
