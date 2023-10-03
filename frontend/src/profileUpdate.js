@@ -15,7 +15,9 @@ function ProfileUpdate() {
   const navigate = useNavigate();
   const [ischanged, setischanged] = useState(false);
   const[isphonevalid, setisphonevalid]=useState(true);
-  const[isemailvalid, setisemailvalid]=useState(true)
+  const[isemailvalid, setisemailvalid]=useState(true);
+  const[isvalid, setisvalid]=useState(true);
+
 
   const [changedData, setChangedData] = useState({
     id: '',
@@ -86,6 +88,9 @@ function ProfileUpdate() {
         //alert("invalid email");
         setisemailvalid(false);
       }
+      if(!validatePhone(changedData.phone)&&!validateEmail(changedData.email)){
+        setisvalid(false);
+      }
       if(validatePhone(changedData.phone)&&validateEmail(changedData.email)){
         update();
       }
@@ -138,6 +143,7 @@ alert("Image uploaded successfully");
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+  
 
   return (
     <div>
@@ -202,12 +208,17 @@ alert("Image uploaded successfully");
         </div></div>
         </div>
       <div className='fullbutton'>
-      {!isphonevalid && (
+
+      {!isphonevalid && isvalid &&(
         <div className="error-message">invalid Phone number</div>
          )}
-        {!isemailvalid && (
+        {!isemailvalid && isvalid && (
         <div className="error-message">invalid Email</div>
       )} 
+      {!isphonevalid && !isemailvalid && !isvalid && (
+        <div className="error-message">Invalid Phone number and Email</div>
+      )}
+
       <button type="button" className="button" onClick={handleSubmit}>Update</button>
       <button type="button" className="button1" onClick={handleCancel}>Cancel</button>
     </div>

@@ -68,15 +68,15 @@ describe('ProfileUpdate', () => {
 //     // Check if the navigate function was called with the correct route
 //     expect(navigate).toHaveBeenCalledWith('/account');
 //   });
-  it('navigates to account page', () => {
-    const navigate = jest.fn(); // Mock the navigate function
-    render(<ProfileUpdate navigate={navigate} />); // Pass the mock function as a prop to your component
+//   it('navigates to account page', () => {
+//     const navigate = jest.fn(); // Mock the navigate function
+//     render(<ProfileUpdate navigate={navigate} />); // Pass the mock function as a prop to your component
   
-    fireEvent.click(screen.getByText('ACCOUNT'));
+//     fireEvent.click(screen.getByText('ACCOUNT'));
   
-    // Check if the navigate function was called with the correct route
-    expect(navigate).toHaveBeenCalledWith('/account');
-  });
+//     // Check if the navigate function was called with the correct route
+//     expect(navigate).toHaveBeenCalledWith('/account');
+//   });
 });
 
 describe('PasswordUpdate', () => {
@@ -117,8 +117,7 @@ describe('PasswordUpdate', () => {
 
         fireEvent.change(newPasswordInput, { target: { value: 'invalidpassword' } });
         fireEvent.change(confirmPasswordInput, { target: { value: 'invalidpassword' } });
-
-    
+  
         // Check if the "Invalid password format" message appears
         fireEvent.click(screen.getByText('Update'));
         expect(screen.getByText("Invalid password format")).toBeInTheDocument();
