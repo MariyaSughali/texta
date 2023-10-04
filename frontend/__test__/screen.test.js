@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent,waitFor} from '@testing-library/react';
 import ProfileUpdate from '../src/profileUpdate';
 import Passwordupdate from '../src/passwordupdate';
-import axios from 'axios';
+// import axios from 'axios';
 
 //jest.mock('axios');
 
@@ -26,6 +26,16 @@ describe('ProfileUpdate', () => {
     // Check if the input field's value has changed
     expect(firstNameInput).toHaveValue('NewName');
   });
+  it('validates email', () => {
+    render(<ProfileUpdate />);
+    
+    const emailInput = screen.getByLabelText('Email');
+    fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
+
+    // Check if the "invalid email" message appears
+    fireEvent.click(screen.getByText('Update'));
+    expect(screen.getByText("Invalid Email")).toBeInTheDocument();
+  });
 
   it('validates phone number', () => {
     render(<ProfileUpdate />);
@@ -35,19 +45,10 @@ describe('ProfileUpdate', () => {
 
     // Check if the "invalid Phone number" message appears
     fireEvent.click(screen.getByText('Update'));
-    expect(screen.getByText('invalid Phone number')).toBeInTheDocument();
+    expect(screen.getByText('Invalid Phone number')).toBeInTheDocument();
   });
 
-  it('validates email', () => {
-    render(<ProfileUpdate />);
-    
-    const emailInput = screen.getByLabelText('Email');
-    fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
-
-    // Check if the "invalid email" message appears
-    fireEvent.click(screen.getByText('Update'));
-    expect(screen.getByText('invalid Email')).toBeInTheDocument();
-  });
+  
 
 //   it('handles file input change', () => {
 //     render(<ProfileUpdate />);

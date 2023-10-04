@@ -9,7 +9,7 @@ function Passwordupdate(){
   const handleClickPassword = () => {
     navigate('/password');
   };
-  const handleClickaccount = () => {
+  const handleClickAccount = () => {
     navigate('/account');
   };
   const[passwords,setPasswords]=useState({
@@ -26,9 +26,9 @@ function Passwordupdate(){
   const handlePasswordUpdate = async () => {
     // Check if newPassword and confirmPassword match
     if (passwords.newPassword !== passwords.confirmPassword) {
-      alert("New password and confirmation password don't match");
-      setismatch(false)
-      return;
+     // alert("New password and confirmation password don't match");
+      setismatch(false);
+      // return;
     }
     function validatePassword(newPassword) {
       // Password pattern: 8 characters, at least one uppercase letter, one special character, and one digit
@@ -36,28 +36,33 @@ function Passwordupdate(){
       return passwordPattern.test(newPassword);
     }
     if (!validatePassword(passwords.newPassword)) {
-         alert("Invalid password format:\n password must contain\n 8 characters\n at least one uppercase letter\n at least one special character\n one digit");
+         //alert("Invalid password format:\n password must contain\n 8 characters\n at least one uppercase letter\n at least one special character\n one digit");
          setisformatinvalid(false);
-         return;
+        //  return;
     }
 
-    try {
-      // Send a PUT request to update the password
-      await axios.put('http://localhost:3008/changepassword', {
-        oldPassword:passwords.oldPassword,
-        newPassword: passwords.newPassword,
-        id: changedData.id,
-      });
-      alert('Password updated successfully');
-      setPasswords({ oldPassword:'',
-      newPassword:'',
-      confirmPassword: '', })
-
-    } catch (error) {
-      console.error('Error updating password:', error);
-      alert('Invalid old password');
-      setisoldpasswordvalid(false);
+    if(passwords.newPassword === passwords.confirmPassword && validatePassword(passwords.newPassword)){
+      try {
+        // Send a PUT request to update the password
+        await axios.put('http://localhost:3008/changepassword', {
+          oldPassword:passwords.oldPassword,
+          newPassword: passwords.newPassword,
+          id: changedData.id,
+        });
+        alert('Password updated successfully');
+        setPasswords({ oldPassword:'',
+        newPassword:'',
+        confirmPassword: '', })
+  
+      } catch (error) {
+        console.error('Error updating password:', error);
+        //alert('Invalid old password');
+        setisoldpasswordvalid(false);
+      }
+    }else{
+      return;
     }
+    
   };
 
   const handlecancel= async()=>{
@@ -128,24 +133,24 @@ setischanged(!ischanged);
   return (
     <div>
         <div className='topbar'>
-        <h1><span class="material-symbols-outlined">arrow_back</span>Profile</h1>
+        <h1 className='profile'><span class="material-symbols-outlined">arrow_back</span>Profile</h1>
         </div>
     <div className='navi'>
     <label htmlFor="fileInput" className="label">
         <span>
-        <img id="profile" src={changedData.image ||'./profile.png'} alt='profile' defaultValue="./profile.png" />
+        <img className='img' id="profile" src={changedData.image ||'./profile.png'} alt='profile' defaultValue="./profile.png" />
           </span>
         </label>
         <input className='none' type="file" id="fileInput" accept="image/*" onChangeCapture={uploadImage} onInputCapture={handleFileChange} required />
         <br></br>
-        <button onClick={handleClickaccount}>ACCOUNT</button><br></br>
-        <button onClick={handleClickPassword}>PASSWORD</button><br></br>
-        <button>SETTINGS</button><br></br>
-        <button>LOG OUT</button><br></br>
+        <button className="b1" onClick={handleClickAccount}>ACCOUNT</button><br></br>
+        <button className="b2" onClick={handleClickPassword}>PASSWORD</button><br></br>
+        <button className="b3">SETTINGS</button><br></br>
+        <button className="b4">LOG OUT</button><br></br>
 
     </div>
     <div className='secondhalf'>
-        <h2 className='movedown'>PASSWORD</h2>
+        <h2 className='movedown details'>PASSWORD</h2>
         <br></br>
         <div className='divide '>
         <div className='both'>   

@@ -148,32 +148,32 @@ alert("Image uploaded successfully");
   return (
     <div>
       <div className='topbar'>
-        <h1><span class="material-symbols-outlined">arrow_back</span>Profile</h1>
+        <h1 className='profile'><span class="material-symbols-outlined">arrow_back</span>Profile</h1>
         </div>
     <div className='navi'>
         <label htmlFor="fileInput" className="label">
         <span>
-          <img id="profile" src={changedData.image ||'./profile.png'} alt='profile' defaultValue="./profile.png" />
+          <img className="img" id="profile" src={changedData.image ||'./profile.png'} alt='profile' defaultValue="./profile.png" />
           </span>
 
         </label>
         <input className='none' type="file" id="fileInput" accept="image/*" onChangeCapture={uploadImage} onInputCapture={handleFileChange} required />
       <br></br>
 
-        <button onClick={handleClickAccount}>ACCOUNT</button><br></br>
-        <button onClick={handleClickPassword}>PASSWORD</button><br></br>
-        <button>SETTINGS</button><br></br>
-        <button>LOG OUT</button><br></br>
+        <button className="b1" onClick={handleClickAccount}>ACCOUNT</button><br></br>
+        <button className="b2" onClick={handleClickPassword}>PASSWORD</button><br></br>
+        <button className="b3">SETTINGS</button><br></br>
+        <button className="b4">LOG OUT</button><br></br>
     </div>
     <div className='secondhalf'>
-        <h2>DETAILS</h2>
+        <h2 className="details">DETAILS</h2>
         <br></br>
         <div className='divide '>
         <div className='both'>   
 
         <div className='form-row'>        
         <label for="firstname" >First Name </label>
-        <input  type="text" name="firstname" id="firstname" value={changedData.firstname} onChange={handleChanges} required/><br />
+        <input  type="text" className='pointerevent' name="firstname" id="firstname" value={changedData.firstname} onChange={handleChanges} readOnly/><br />
         </div>
 
         <div className='form-row'> 
@@ -183,7 +183,7 @@ alert("Image uploaded successfully");
 
         <div className='form-row'> 
         <label for="role">Role </label>
-        <input  type="text" className='pointerevent' name="role" id="role" defaultValue={changedData.role} readonly />
+        <input  type="text" className='pointerevent' name="role" id="role" defaultValue={changedData.role} readOnly />
         </div>
 
         </div>
@@ -192,7 +192,7 @@ alert("Image uploaded successfully");
         
         <div className='form-row'>  
         <label htmlFor="secondname">Last Name </label>
-        <input type="text" name="secondname" id="secondname" value={changedData.secondname} onChange={handleChanges} required/><br />
+        <input type="text" className='pointerevent' name="secondname" id="secondname" value={changedData.secondname} onChange={handleChanges} readOnly/><br />
         </div>
 
         <div className='form-row'> 
@@ -210,10 +210,10 @@ alert("Image uploaded successfully");
       <div className='fullbutton'>
 
       {!isphonevalid && isvalid &&(
-        <div className="error-message">invalid Phone number</div>
+        <div className="error-message">Invalid Phone number</div>
          )}
         {!isemailvalid && isvalid && (
-        <div className="error-message">invalid Email</div>
+        <div className="error-message">Invalid Email</div>
       )} 
       {!isphonevalid && !isemailvalid && !isvalid && (
         <div className="error-message">Invalid Phone number and Email</div>

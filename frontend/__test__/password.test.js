@@ -5,6 +5,11 @@ import Passwordupdate from '../src/passwordupdate';
 
 // Mock Axios
 jest.mock('axios');
+// jest.mock('react-router-dom', () => ({
+//   ...jest.requireActual('react-router-dom'),
+//   useNavigate: () => jest.fn(),
+// }));
+
 
 it('handles password update correctly', async () => {
   // Mock the Axios `put` function to simulate a successful password update
