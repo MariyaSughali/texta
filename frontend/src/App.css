@@ -67,11 +67,11 @@ input[type="text"],input[type="email"],input[type="password"]
  margin-left: 285px;
 
 }
- .button:hover{
+.button:hover{
   background-color: transparent;
   color:orangered;
  }
- .button1:hover{
+.button1:hover{
   border-color: transparent;
   color: orangered;
  }
