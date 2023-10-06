@@ -17,9 +17,8 @@ function Passwordupdate(){
     newPassword:'',
     confirmPassword: '',
   })
-  const [ismatch,setismatch]=useState(true);
-  const [isformatvalid,setisformatinvalid]=useState(true);
-  const [isoldpasswordvalid,setisoldpasswordvalid]=useState(true);
+  const [isvalid,setisvalid]=useState(true);
+  const[message,setmessage]=useState("");
 
 
 
@@ -27,7 +26,8 @@ function Passwordupdate(){
     // Check if newPassword and confirmPassword match
     if (passwords.newPassword !== passwords.confirmPassword) {
      // alert("New password and confirmation password don't match");
-      setismatch(false);
+      setisvalid(false);
+      setmessage("New password and confirmation password don't match")
       // return;
     }
     function validatePassword(newPassword) {
@@ -37,7 +37,8 @@ function Passwordupdate(){
     }
     if (!validatePassword(passwords.newPassword)) {
          //alert("Invalid password format:\n password must contain\n 8 characters\n at least one uppercase letter\n at least one special character\n one digit");
-         setisformatinvalid(false);
+         setisvalid(false);
+         setmessage("Invalid password format")
         //  return;
     }
 
@@ -57,7 +58,8 @@ function Passwordupdate(){
       } catch (error) {
         console.error('Error updating password:', error);
         //alert('Invalid old password');
-        setisoldpasswordvalid(false);
+        setisvalid(false);
+        setmessage("Invalid old password")
       }
     }else{
       return;
@@ -101,7 +103,9 @@ function Passwordupdate(){
 
 const uploadImage = async () => {
     if (!selectedFile) {
-      alert('Please select an image to upload');
+      // alert('Please select an image to upload');
+      setisvalid(false);
+      setmessage("Please select an image to upload")
       return;
     }
 // Create a FormData object to send the image file
@@ -114,10 +118,14 @@ try {
       'Content-Type': 'multipart/form-data',
     },
   });
-  alert('Image uploaded to successfully');
+  //alert('Image uploaded to successfully');
+  setisvalid(false);
+  setmessage("Image uploaded to successfully")
 } catch (error) {
   console.error('Error uploading image:', error);
-  alert('Image upload failed');
+  //alert('Image upload failed');
+  setisvalid(false);
+  setmessage("Image upload failed")
 }
 //to get the url from bucket and store in database
 await axios.get(`http://localhost:3008/url/${selectedFile.name}/${changedData.id}`);
@@ -159,15 +167,14 @@ setischanged(!ischanged);
         <label htmlFor="oldpassword">Old Password </label>
         <input  type="text" name="oldpassword" id="oldpassword" value={passwords.oldPassword}
                 onChange={(e) =>{setPasswords({ ...passwords, oldPassword: e.target.value })
-                                 setisoldpasswordvalid(true)} }/><br />
+                                 setisvalid(true)} }/><br />
         </div>
 
         <div className='form-row'> 
         <label htmlFor="newpassword">New Password</label>
         <input  type="password" name="newpassword" id="newpassword"  value={passwords.newPassword}
                 onChange={(e) =>{setPasswords({ ...passwords, newPassword: e.target.value })
-                                  setismatch(true)
-                                  setisformatinvalid(true)}} /><br />
+                                  setisvalid(true)}} /><br />
         </div>
 
         </div>
@@ -178,15 +185,14 @@ setischanged(!ischanged);
         <label htmlFor="confirmpassword">Confirm Password </label>
         <input  type="password" name='confirmpassword' id='confirmpassword' value={passwords.confirmPassword}
                   onChange={(e) => {setPasswords({...passwords,confirmPassword: e.target.value,})
-                                    setismatch(true)
-                                    setisformatinvalid(true)}}/><br></br>
+                                    setisvalid(true)}}/><br></br>
         </div>
         </div>
        </div>
       </div>
 
       <div className='fullbutton'>
-      {!isformatvalid && (
+      {/* {!isformatvalid && (
         <div className="error-message">Invalid password format</div>
         )} 
       {!ismatch && (
@@ -194,7 +200,9 @@ setischanged(!ischanged);
          )}
       {!isoldpasswordvalid && (
         <div className="error-message">invalid old password</div>
-         )}
+         )} */}
+       <div className="error-message">{!isvalid && <p>{message}</p>}</div>
+
 
 
       <button type="button" className="button" onClick={handlePasswordUpdate} >Update</button>

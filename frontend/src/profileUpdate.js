@@ -14,9 +14,10 @@ AWS.config.update({
 function ProfileUpdate() {
   const navigate = useNavigate();
   const [ischanged, setischanged] = useState(false);
-  const[isphonevalid, setisphonevalid]=useState(true);
-  const[isemailvalid, setisemailvalid]=useState(true);
+  //const[isphonevalid, setisphonevalid]=useState(true);
+  //const[isemailvalid, setisemailvalid]=useState(true);
   const[isvalid, setisvalid]=useState(true);
+  const[message,setmessage]=useState("");
 
 
   const [changedData, setChangedData] = useState({
@@ -53,8 +54,9 @@ function ProfileUpdate() {
   }, [ischanged]);
 
   const handleChanges = (e) => {
-    setisemailvalid(true);
-    setisphonevalid(true);
+    //setisemailvalid(true);
+    //setisphonevalid(true);
+    setisvalid(true);
 
     const { name, value } = e.target;
     setChangedData((prevData) => ({
@@ -66,7 +68,9 @@ function ProfileUpdate() {
   const handleSubmit = async () => {
     try {
       const update =()=>{axios.put('http://localhost:3008/editdata', changedData);
-      alert('Profile updated successfully');}
+      //alert('Profile updated successfully');
+      setmessage("Profile updated successfully")
+    }
 
       function validateEmail(email) {
         var emailPattern = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.com$/;
@@ -77,20 +81,26 @@ function ProfileUpdate() {
         var phonePattern = /^\d{10}$/;
         return phonePattern.test(phone);
       }
-
+      
 //validate phone number
       if (!validatePhone(changedData.phone)) {
        // alert("invalid Phone number");
-        setisphonevalid(false);
+        setmessage("invalid Phone number")
+        //setisphonevalid(false);
+        setisvalid(false)
        }
 //validate email
       if (!validateEmail(changedData.email)) {
         //alert("invalid email");
-        setisemailvalid(false);
-      }
-      if(!validatePhone(changedData.phone)&&!validateEmail(changedData.email)){
+        setmessage("invalid email")
+        //setisemailvalid(false);
         setisvalid(false);
       }
+      if(!validatePhone(changedData.phone)&&!validateEmail(changedData.email)){
+        setmessage("invalid phone and email")
+        setisvalid(false);
+      }
+     
       if(validatePhone(changedData.phone)&&validateEmail(changedData.email)){
         update();
       }
@@ -103,6 +113,7 @@ function ProfileUpdate() {
 
   const handleCancel = () => {
     setischanged(!ischanged);
+    setisvalid(true);
   };
 
   const handleClickPassword = () => {
@@ -117,7 +128,9 @@ function ProfileUpdate() {
  // Function to upload the selected image to AWS S3
   const uploadImage = async () => {
     if (!selectedFile) {
-      alert('Please select an image to upload');
+      //alert('Please select an image to upload');
+      setmessage("Please select an image to upload");
+      setisvalid(false);
       return;
     }
 // Create a FormData object to send the image file
@@ -132,11 +145,15 @@ try {
   });
 } catch (error) {
   console.error("Error uploading image:", error);
-  alert("Image upload failed");
+  //alert("Image upload failed");
+  setmessage("Image upload failed");
+  setisvalid(false);
 }
 await axios.get(`http://localhost:3008/url/${selectedFile.name}/${changedData.id}`);
 setischanged(!ischanged);
-alert("Image uploaded successfully");
+//alert("Image uploaded successfully");
+setmessage("Image uploaded successfully");
+setisvalid(false);
 };
 
  // Function to handle file selection
@@ -209,7 +226,7 @@ alert("Image uploaded successfully");
         </div>
       <div className='fullbutton'>
 
-      {!isphonevalid && isvalid &&(
+      {/* {!isphonevalid && isvalid &&(
         <div className="error-message">Invalid Phone number</div>
          )}
         {!isemailvalid && isvalid && (
@@ -217,11 +234,14 @@ alert("Image uploaded successfully");
       )} 
       {!isphonevalid && !isemailvalid && !isvalid && (
         <div className="error-message">Invalid Phone number and Email</div>
-      )}
+      )} */}
+
+      <div className="error-message">{!isvalid && <p>{message}</p>}</div>
 
       <button type="button" className="button" onClick={handleSubmit}>Update</button>
       <button type="button" className="button1" onClick={handleCancel}>Cancel</button>
     </div>
+    <div></div>
     </div>
     </div>
   );
